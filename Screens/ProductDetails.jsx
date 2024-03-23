@@ -85,6 +85,7 @@ import  Toast  from "react-native-toast-message";
 import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { getProductDetails } from "../Redux/Actions/ProductAction";
+import { Rating } from "react-native-ratings";
 
 const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = SLIDER_WIDTH;
@@ -155,6 +156,40 @@ const ProductDetails = ({ route: { params } }) => {
   useEffect(() => {
     dispatch(getProductDetails(params.id));
   }, [dispatch, params.id, isFocused]);
+
+  const handleRating = async (rating) => {
+    try {
+      const response = await fetch(`https://htt-production.up.railway.app/api/v1/product/${params.id}/ratings`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          rating: rating,
+          comment: "good product",
+        }),
+      });
+
+      if (response.ok) {
+        Toast.show({
+          type: "success",
+          text1: "Product rated successfully",
+        });
+      } else {
+        const errorData = await response.json();
+        Toast.show({
+          type: "error",
+          text1: errorData.message,
+        });
+      }
+    } catch (error) {
+      console.error(error.message);
+      Toast.show({
+        type: "error",
+        text1: "Internal server error",
+      });
+    }
+  };
 
   return (
     <View
@@ -259,6 +294,22 @@ const ProductDetails = ({ route: { params } }) => {
         <TouchableOpacity activeOpacity={0.9} 
         onPress={addToCardHandler}
         >
+        {/* images */}
+        <Rating
+            type="star"
+            ratingCount={5}
+            imageSize={20}
+            showRating
+            onFinishRating={(rating) => handleRating(rating)}
+          />
+          {/* Average Rating */}
+          <View style={{ marginTop: 10 }}>
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+              Average Rating: {}
+            </Text>
+          </View>
+          
+          <Text>Reward point : {parseInt(price/10)}🪙</Text>
           {/* images */}
           <Button icon={"cart"} style={style.btn} textColor={colors.color2}>
             Add To Cart
