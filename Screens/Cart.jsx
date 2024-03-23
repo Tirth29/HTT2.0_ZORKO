@@ -10,7 +10,7 @@ import CartItem from "../Components/CartItem";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-// import {Vouchers} from "./Vouchers";
+import {Vouchers} from "../Components/Vouchers";
 
 const Cart = () => {
   const navigate = useNavigation();
