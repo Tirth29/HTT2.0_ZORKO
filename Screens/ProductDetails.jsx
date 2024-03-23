@@ -308,6 +308,8 @@ const ProductDetails = ({ route: { params } }) => {
               Average Rating: {}
             </Text>
           </View>
+          
+          <Text>Reward point : {parseInt(price/10)}🪙</Text>
           {/* images */}
           <Button icon={"cart"} style={style.btn} textColor={colors.color2}>
             Add To Cart
