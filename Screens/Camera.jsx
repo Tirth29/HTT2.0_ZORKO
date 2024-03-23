@@ -31,6 +31,10 @@ const CameraComponent = ({ navigation, route }) => {
       return navigation.navigate("profile", {
         image: data.assets[0].uri,
       });
+    if (route.params?.newPost)
+      return navigation.navigate("uploadpost", {
+        image: data.assets[0].uri,
+      });
     else
       return navigation.navigate("signup", {
         image: data.assets[0].uri,
@@ -51,6 +55,10 @@ const CameraComponent = ({ navigation, route }) => {
       });
     if (route.params?.updateProfile)
       return navigation.navigate("profile", {
+        image: data.uri,
+      });
+    if (route.params?.newPost)
+      return navigation.navigate("uploadpost", {
         image: data.uri,
       });
     else

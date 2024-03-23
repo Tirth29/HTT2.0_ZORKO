@@ -25,6 +25,13 @@ const Footer = ({ activeRoute = "home" }) => {
         else navigate.navigate("login");
         console.log("login");
         break;
+      case 3:
+        if (!isAuthenticated) navigate.navigate("login");
+        else navigate.navigate("post");
+        break;
+      case 4:
+        navigate.navigate("map");
+        break;
       default:
         navigate.navigate("home");
         break;
@@ -71,6 +78,38 @@ const Footer = ({ activeRoute = "home" }) => {
                 backgroundColor: colors.color1,
               }}
               icon={activeRoute === "cart" ? "shopping" : "shopping-outline"}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            size={50}
+            style={{
+              backgroundColor: colors.color1,
+            }}
+            onPress={() => navigationHandler(3)}
+          >
+            <Avatar.Icon
+              color={colors.color2}
+              style={{
+                backgroundColor: colors.color1,
+              }}
+              icon={isAuthenticated === false ? "login" : "post"}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            size={50}
+            style={{
+              backgroundColor: colors.color1,
+            }}
+            onPress={() => navigationHandler(4)}
+          >
+            <Avatar.Icon
+              color={colors.color2}
+              style={{
+                backgroundColor: colors.color1,
+              }}
+              icon="map"
             />
           </TouchableOpacity>
           <TouchableOpacity

@@ -27,6 +27,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadUser } from "./Redux/Actions/UserAction";
 import OTPVerification from "./Screens/OtpVerify";
 import OtpVerify from "./Screens/OtpVerify";
+import Post from "./Screens/Post";
+import UploadPost from "./Components/UploadPost";
 
 const Stack = createNativeStackNavigator();
 
@@ -58,7 +60,9 @@ const Main = () => {
           <Stack.Screen name="profile" component={Profile} />
           <Stack.Screen name="updateprofile" component={UpdateProfile} />
           <Stack.Screen name="orders" component={Orders} />
+          <Stack.Screen name="post" component={Post} />
           <Stack.Screen name="camera" component={CameraComponent} />
+          <Stack.Screen name="uploadpost" component={UploadPost} />
           {/* password related route */}
           <Stack.Screen name="otpsignin" component={OtpVerify} />
           <Stack.Screen name="otpverify" component={Verify} />
