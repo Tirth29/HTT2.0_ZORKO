@@ -29,6 +29,7 @@ import OTPVerification from "./Screens/OtpVerify";
 import OtpVerify from "./Screens/OtpVerify";
 import Post from "./Screens/Post";
 import UploadPost from "./Components/UploadPost";
+import NearbyOutlets from "./Screens/NearbyOutlet";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,7 +43,7 @@ const Main = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="home"
+        initialRouteName="nearbyoutlet"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Group>
@@ -75,6 +76,7 @@ const Main = () => {
           <Stack.Screen name="adminorders" component={AdminOrders} />
           <Stack.Screen name="newproduct" component={NewProduct} />
           <Stack.Screen name="productimages" component={ProductImages} />
+          <Stack.Screen name="nearbyoutlet" component={NearbyOutlets} />
         </Stack.Group>
       </Stack.Navigator>
       <Toast position="top" topOffset={40} />

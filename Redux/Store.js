@@ -13,5 +13,6 @@ export const Store = configureStore({
 });
 
 export const server = "https://htt-production.up.railway.app/api/v1";
+// export const server = "http://192.168.23.99:5000/api/v1"
 // export const server = "http://192.168.121.69:5000/api/v1";
 // export const server = "https://e-commerceserver-123.up.railway.app/api/v1";
