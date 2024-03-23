@@ -153,6 +153,7 @@ const Profile = ({ navigation, route }) => {
             >
               <View
                 style={{
+                  
                   flexDirection: "row",
                   margin: 10,
                   justifyContent: "space-evenly",
