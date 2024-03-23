@@ -25,6 +25,7 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [priceLimit, setPriceLimit] = useState(1000);
 
   const { products } = useSelector((state) => state.product);
 
@@ -73,6 +74,12 @@ const Home = () => {
       dispatch(getAllProducts(searchQuery)); // Fetch all products
     }
   }, [dispatch, searchQuery, selectedCategory, isFocused]);
+
+  const updatePriceLimit = (x) => {
+    setPriceLimit(x);
+    // console.log(x);
+  };
+
   return (
     <>
       {activeSearch && (
@@ -85,7 +92,7 @@ const Home = () => {
       )}
 
       <View style={defaultStyle}>
-        <Header />
+        <Header setPriceLimit={updatePriceLimit} />
 
         {/* Heading Row */}
         <View
@@ -175,18 +182,21 @@ const Home = () => {
         {/* Products */}
         <View style={{ flex: 1 }}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {products.map((item) => (
-              <ProductCard
-                key={item._id}
-                id={item._id}
-                name={item.name}
-                price={item.price}
-                image={item.images[0]?.url}
-                stock={item.stock}
-                addToCardHandler={addToCardHandler}
-                navigate={navigate}
-              />
-            ))}
+            {products.map(
+              (item) =>
+                item.price < priceLimit && (
+                  <ProductCard
+                    key={item._id}
+                    id={item._id}
+                    name={item.name}
+                    price={item.price}
+                    image={item.images[0]?.url}
+                    stock={item.stock}
+                    addToCardHandler={addToCardHandler}
+                    navigate={navigate}
+                  />
+                )
+            )}
           </ScrollView>
         </View>
       </View>

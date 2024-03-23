@@ -5,7 +5,7 @@ import { colors, inputOptions } from "../Styles/styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 
-const Header = ({ back, emptyCart = false }) => {
+const Header = ({ back, emptyCart = false, setPriceLimit }) => {
   const [limit, setLimit] = useState(1000);
   const navigate = useNavigation();
   const dispatch = useDispatch();
@@ -14,6 +14,11 @@ const Header = ({ back, emptyCart = false }) => {
     dispatch({
       type: "clearCart",
     });
+  };
+
+  const handleLimitChange = (x) => {
+    setLimit(x);
+    setPriceLimit(x);
   };
 
   return (
@@ -46,7 +51,7 @@ const Header = ({ back, emptyCart = false }) => {
           placeholder="Set Limit"
           keyboardType="numeric"
           value={limit}
-          onChangeText={setLimit}
+          onChangeText={handleLimitChange}
         />
       </View>
 

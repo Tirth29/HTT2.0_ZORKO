@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Footer from "../Components/Footer";
 import { useMessageAndErrorUser } from "../Utils/hooks";
 import { loginOTP, submitOTP } from "../Redux/Actions/UserAction";
+import axios from "axios";
+import { server } from "../Redux/Store";
 import { colors, defaultStyle, formHeading } from "../Styles/styles";
 
 const OtpVerify = ({ navigation }) => {
@@ -14,15 +16,38 @@ const OtpVerify = ({ navigation }) => {
   const [otpSent, setOtpSent] = useState(false); // Flag to track if OTP is sent
   const dispatch = useDispatch();
   const loading = useMessageAndErrorUser(navigation, dispatch, "profile");
+  const [verificationSid, setVerificationSid] = useState("");
   const handleSendOTP = async () => {
     console.log(phone);
-    otpSent = True;
-    dispatch(loginOTP(phone));
+    setOtpSent(true);
+    // dispatch(loginOTP(phone));
+    try {
+      dispatch({
+        type: "loginRequest",
+      });
+      // console.log(phone);
+      const { data } = await axios.post(
+        `${server}/user/otp-login`,
+        {
+          phone,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setVerificationSid(data.verificationSid);
+      console.log(verificationSid, data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSubmitOTP = async () => {
     const code = otp;
-    const { verificationSid } = useSelector((state) => state.verificationSid);
+    // const { verificationSid } = useSelector((state) => state.verificationSid);
+    console.log(verificationSid, code, phone);
     dispatch(submitOTP(verificationSid, code, phone));
   };
 
