@@ -109,7 +109,6 @@ const NearbyOutlets = () => {
             region={{ ...initialRegion }}
           >
             <Marker
-              pinColor="green"
               coordinate={{ latitude, longitude }} // Update marker coordinates to user location
               title="Your Location"
             />
@@ -121,6 +120,7 @@ const NearbyOutlets = () => {
               );
               return (
                 <Marker
+                  pinColor="green"
                   key={outlet._id} // Use unique identifier for each outlet
                   coordinate={{
                     latitude: outlet.location.coordinates[0],
@@ -229,5 +229,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
 });
+
+const Outlet = () => {
+  
+}
 
 export default NearbyOutlets;
