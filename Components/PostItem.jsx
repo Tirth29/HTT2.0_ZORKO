@@ -68,7 +68,7 @@ const PostItem = ({ post }) => {
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
           alignItems: "center",
           marginBottom: 10,
         }}
@@ -76,13 +76,13 @@ const PostItem = ({ post }) => {
         <Pressable onPress={handleLikePress}>
           <MaterialCommunityIcons
             name={liked ? "heart" : "heart-outline"}
-            size={32}
+            size={25}
             color={liked ? "red" : "black"}
           />
         </Pressable>
-        <TouchableOpacity onPress={handleComment}>
-          <Text style={{ color: "blue", fontSize: 16 }}>Comment</Text>
-        </TouchableOpacity>
+        <Pressable style={{marginLeft:7}} onPress={handleComment}>
+        <MaterialCommunityIcons name="message-outline" size={24} />
+        </Pressable>
       </View>
       <Text>{post.description}</Text>
     </View>

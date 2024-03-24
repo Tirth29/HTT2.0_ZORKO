@@ -198,7 +198,8 @@ const Home = () => {
 
         {/* Products */}
         <View style={{ flex: 1 }}>
-          <ScrollView vertical showsHorizontalScrollIndicator={false}>
+          <ScrollView style={{height:"400"}} vertical showsHorizontalScrollIndicator={false}>
+          <View style={{display:"flex", flexDirection:"row",flexWrap:"wrap" }}>
             {products.map(
               (item) =>
                 item.price < priceLimit && (
@@ -214,6 +215,7 @@ const Home = () => {
                   />
                 )
             )}
+          </View>
           </ScrollView>
         </View>
       </View>

@@ -88,10 +88,11 @@ const NearbyOutlets = () => {
 
   // Handle carousel item press to focus map on marker
   const handleMarkerPress = (outletData) => {
-    const { coordinate } = outletData.location; // Assuming location data has a 'coordinate' property
+    console.log(outletData)
+    const { coordinates } = outletData.location; // Assuming location data has a 'coordinate' property
     mapRef.current.animateToRegion({
-      latitude: coordinate.latitude,
-      longitude: coordinate.longitude,
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
       latitudeDelta: 0.01, // Adjust zoom level as needed
       longitudeDelta: 0.01, // Adjust zoom level as needed
     });
@@ -108,6 +109,7 @@ const NearbyOutlets = () => {
             region={{ ...initialRegion }}
           >
             <Marker
+              pinColor="green"
               coordinate={{ latitude, longitude }} // Update marker coordinates to user location
               title="Your Location"
             />
@@ -191,28 +193,6 @@ const OutletCarousel = ({ data, onMarkerPress, mapRef }) => {
     </View>
   );
 };
-
-async function CarouselWrapper({
-  data,
-  renderItem,
-  sliderWidth,
-  itemWidth,
-  onBeforeChange,
-  animate,
-}) {
-  useEffect(() => {
-    animate();
-  }, []);
-  return (
-    <Carousel
-      data={data}
-      renderItem={renderItem}
-      sliderWidth={sliderWidth} // Adjust carousel width if needed
-      itemWidth={itemWidth} // Adjust carousel item width if needed
-      onBeforeChange={onBeforeChange} // Update active slide on slide change
-    />
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
