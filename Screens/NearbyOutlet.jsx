@@ -16,6 +16,8 @@ import Carousel from "react-native-snap-carousel";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRef } from "react";
 import Footer from "../Components/Footer";
+// import { log } from "console";
+import { useNavigation } from "@react-navigation/native";
 
 // Geolocation.getCurrentPosition;
 const NearbyOutlets = () => {
@@ -31,6 +33,7 @@ const NearbyOutlets = () => {
     longitudeDelta: 0.0421,
   });
   const mapRef = useRef(null);
+  
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -151,7 +154,7 @@ const NearbyOutlets = () => {
 
 const OutletCarousel = ({ data, onMarkerPress, mapRef }) => {
   const [activeSlide, setActiveSlide] = useState(0);
-
+  const navigation = useNavigation();
   // useEffect();
 
   const _renderItem = ({ item, index }) => (
@@ -161,6 +164,7 @@ const OutletCarousel = ({ data, onMarkerPress, mapRef }) => {
       onPress={() => {
         onMarkerPress(item); // Call the passed function on press
         setActiveSlide(index); // Update active slide for visual feedback (optional)
+        navigation.navigate("contact", { it : item });
       }}
     >
       <Image
@@ -168,11 +172,11 @@ const OutletCarousel = ({ data, onMarkerPress, mapRef }) => {
           uri: "https://img.freepik.com/free-photo/exploding-burger-with-vegetables-melted-cheese-black-background-generative-ai_157027-1734.jpg",
         }}
         style={{
-          height:"70%",borderRadius: 5
+          height: "70%", borderRadius: 5
         }}
         alt=""
       />
-      
+
       <Text style={styles.carouselTitle}>{item.name}</Text>
       <Text style={styles.carouselText}>{item.address}</Text>
       {/* Add distance, image, or other outlet details */}
@@ -231,7 +235,7 @@ const styles = StyleSheet.create({
 });
 
 const Outlet = () => {
-  
+
 }
 
 export default NearbyOutlets;
