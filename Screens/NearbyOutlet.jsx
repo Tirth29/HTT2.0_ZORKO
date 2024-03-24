@@ -8,19 +8,27 @@ import {
   Text,
   Dimensions,
   Image,
+  Pressable,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { server } from "../Redux/Store";
 import * as Location from "expo-location";
 import Carousel from "react-native-snap-carousel";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useRef } from "react";
 import Footer from "../Components/Footer";
+// import { log } from "console";
+import { useNavigation } from "@react-navigation/native";
+import ReactNativeModal from "react-native-modal";
+
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Geolocation.getCurrentPosition;
 const NearbyOutlets = () => {
+  const [showOutletModal, setShowOutletModal] = useState(false);
+  const [selectedOutletModal, setSelectedOutletModal] = useState(null);
+  console.log(showOutletModal, selectedOutletModal);
   const [outlets, setOutlets] = useState([]);
-  // const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
@@ -31,6 +39,7 @@ const NearbyOutlets = () => {
     longitudeDelta: 0.0421,
   });
   const mapRef = useRef(null);
+  
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -88,7 +97,6 @@ const NearbyOutlets = () => {
 
   // Handle carousel item press to focus map on marker
   const handleMarkerPress = (outletData) => {
-    console.log(outletData)
     const { coordinates } = outletData.location; // Assuming location data has a 'coordinate' property
     mapRef.current.animateToRegion({
       latitude: coordinates.latitude,
@@ -96,6 +104,14 @@ const NearbyOutlets = () => {
       latitudeDelta: 0.01, // Adjust zoom level as needed
       longitudeDelta: 0.01, // Adjust zoom level as needed
     });
+  };
+  // In NearbyOutlets:
+  const handleCardPress = (outletData) => {
+    setSelectedOutletModal(outletData); // Pass the whole outlet object
+    setShowOutletModal(true);
+  };
+  const closeOutletModal = () => {
+    setShowOutletModal(false);
   };
   return (
     <View style={styles.container}>
@@ -134,6 +150,7 @@ const NearbyOutlets = () => {
           <View style={styles.carouselContainer}>
             {outlets.length > 0 ? (
               <OutletCarousel
+                handleCardPress={handleCardPress}
                 data={outlets}
                 onMarkerPress={handleMarkerPress}
                 mapRef={mapRef}
@@ -145,22 +162,30 @@ const NearbyOutlets = () => {
         <Text>Fetching location...</Text>
       )}
       <Footer></Footer>
+      <Outlet
+        outletData={selectedOutletModal}
+        isVisible={showOutletModal}
+        onClose={closeOutletModal}
+      />
     </View>
   );
 };
 
-const OutletCarousel = ({ data, onMarkerPress, mapRef }) => {
+const OutletCarousel = ({ data, onMarkerPress, mapRef, handleCardPress }) => {
   const [activeSlide, setActiveSlide] = useState(0);
-
+  const navigation = useNavigation();
   // useEffect();
 
   const _renderItem = ({ item, index }) => (
-    <TouchableOpacity
+    <Pressable
       key={index} // Use unique identifier for each item
       style={styles.carouselItem}
       onPress={() => {
+        console.log("ITEM", item);
         onMarkerPress(item); // Call the passed function on press
         setActiveSlide(index); // Update active slide for visual feedback (optional)
+        handleCardPress(item);
+        navigation.navigate("contact", { it : item });
       }}
     >
       <Image
@@ -168,15 +193,16 @@ const OutletCarousel = ({ data, onMarkerPress, mapRef }) => {
           uri: "https://img.freepik.com/free-photo/exploding-burger-with-vegetables-melted-cheese-black-background-generative-ai_157027-1734.jpg",
         }}
         style={{
-          height:"70%",borderRadius: 5
+          height: "70%",
+          borderRadius: 5,
         }}
         alt=""
       />
-      
+
       <Text style={styles.carouselTitle}>{item.name}</Text>
       <Text style={styles.carouselText}>{item.address}</Text>
       {/* Add distance, image, or other outlet details */}
-    </TouchableOpacity>
+    </Pressable>
   );
 
   return (
@@ -230,8 +256,181 @@ const styles = StyleSheet.create({
   },
 });
 
-const Outlet = () => {
-  
-}
+const Outlet = ({ outletData, isVisible, onClose }) => {
+  // Check if outletData exists for safety
+  if (!outletData) return null;
+  console.log("jsdbvkjds:", outletData);
+
+  return (
+    <ReactNativeModal
+      visible={isVisible}
+      animationType="slide" // Adjust animation as desired
+      transparent={true} // Consider making the background semi-transparent
+    >
+      <ScrollView>
+        <View style={outletStyles.modalContainer}>
+          <View style={outletStyles.contentContainer}>
+            <Image
+              source={{ uri: "https://lh5.googleusercontent.com/p/AF1QipO5Dmkq-hHpda5p5bxoglRNA1YQacCbd5e9LW6p=w426-h240-k-no" }}
+              style={outletStyles.image}
+            />
+            <Pressable>
+              <MaterialCommunityIcons name="close" size={30} onPress={onClose} />
+            </Pressable>
+            <Text style={outletStyles.title}>{outletData.name}</Text>
+            <Text style={outletStyles.address}>{outletData.address}</Text>
+
+            <View style={outletStyles.additionalInfo}>
+              <Text style={outletStyles.additionalInfoLabel}>
+                Dining Availability:{" "}
+              </Text>
+              <Text style={outletStyles.additionalInfoValue}>
+                {outletData.diningIn}
+              </Text>
+              <Text style={outletStyles.additionalInfoLabel}>Rating: </Text>
+              <Text style={outletStyles.additionalInfoValue}>
+                {outletData?.rating} stars
+              </Text>
+            </View>
+            <View style={{ display: "flex", flexDirection: "row" }}>
+              {outletData.offers && outletData.offers.length > 0 ? (
+                <View className="offers-section">
+                  <Text style={{ fontSize: 30, fontWeight: 600 }}>
+                    Available Offers:
+                  </Text>
+                  {outletData.offers.map((offer) => (
+                    <OfferItem key={offer.name} {...offer} />
+                  ))}
+                </View>
+              ) : null}
+            </View>
+
+            {outletData.coupons && outletData.coupons.length > 0 ? (
+              <View className="coupons-section">
+                <Text style={{ fontSize: 30, fontWeight: 600 }}>
+                  Available Coupons:
+                </Text>
+                {outletData.coupons.map((coupon) => (
+                  <CouponItem key={coupon._id} {...coupon} />
+                ))}
+              </View>
+            ) : null}
+          </View>
+        </View>
+      </ScrollView>
+    </ReactNativeModal>
+  );
+};
+const OfferItem = ({ name, description }) => {
+  return (
+    <View style={estyles.offerCard}>
+      <Text style={estyles.title}>{name}</Text>
+      <Text style={estyles.description}>{description}</Text>
+    </View>
+  );
+};
+
+const CouponItem = ({ code, discount, minOrderValue }) => {
+  return (
+    <View style={{ backgroundColor:"lightgray", margin:3, padding:9, borderRadius:10}}>
+      <Text style={estyles.code}>{code}</Text>
+      <Text style={estyles.details}>
+        {discount} (Min. Order: ${minOrderValue})
+      </Text>
+    </View>
+  );
+};
+
+const estyles = StyleSheet.create({
+  offerCard: {
+    // flex: 1,
+    margin: 10,
+    backgroundColor: "#fff", // White background
+    padding: 15,
+    borderRadius: 8,
+    shadowColor: "#000", // Subtle shadow for depth
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2, // (For Android)
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  description: {
+    fontSize: 16,
+    paddingBottom:0
+  },
+  couponCard: {
+    flex: 1,
+    margin: 10,
+    backgroundColor: "#f0f0f0", // Light gray background
+    padding: 15,
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2, // (For Android)
+  },
+  code: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  details: {
+    fontSize: 16,
+  },
+});
+
+const outletStyles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)", //  Semi-transparent background
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  contentContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    // ...other styles
+  },
+  closeButton: {
+    alignSelf: "flex-end", // Optionally place close button on top-right
+  },
+  closeButtonText: {
+    fontSize: 20,
+  },
+  title: {
+    fontSize: 24, // Larger for prominence
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10, // Spacing below title
+  },
+  image: {
+    width: "100%",
+    // height: 200, // Adjust height as needed
+    marginBottom: 12, // Add spacing below the image
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8, // Assuming you want rounded top corners
+  },
+  address: {
+    fontSize: 16, // Standard for readability
+  },
+  // Styling for additional info
+  additionalInfo: {
+    marginTop: 15, // Add some space above the additional info section
+  },
+  additionalInfoLabel: {
+    fontWeight: "600", // or 'bold' - Make labels slightly bolder
+  },
+  additionalInfoValue: {
+    // No changes needed (regular weight)
+  },
+  // ... other detail styles
+});
 
 export default NearbyOutlets;

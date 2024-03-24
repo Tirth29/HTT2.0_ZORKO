@@ -30,7 +30,7 @@ import OtpVerify from "./Screens/OtpVerify";
 import Post from "./Screens/Post";
 import UploadPost from "./Components/UploadPost";
 import NearbyOutlets from "./Screens/NearbyOutlet";
-
+import Contact from "./Screens/Contact";
 const Stack = createNativeStackNavigator();
 
 const Main = () => {
@@ -77,6 +77,7 @@ const Main = () => {
           <Stack.Screen name="newproduct" component={NewProduct} />
           <Stack.Screen name="productimages" component={ProductImages} />
           <Stack.Screen name="nearbyoutlet" component={NearbyOutlets} />
+          <Stack.Screen name="contact" component={Contact} />
         </Stack.Group>
       </Stack.Navigator>
       <Toast position="top" topOffset={40} />
