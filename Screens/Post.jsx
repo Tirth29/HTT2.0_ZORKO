@@ -48,6 +48,8 @@ import axios from "axios";
 
 const Post = () => {
   const [posts, setPosts] = useState([]);
+  const [isCommentOpen, setIsCommentOpen] = useState(false); 
+  const [selectedPostId, setSelectedPostId] = useState(null); 
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [filter, setFilter] = useState("recent"); // Default filter
   const navigation = useNavigation();
