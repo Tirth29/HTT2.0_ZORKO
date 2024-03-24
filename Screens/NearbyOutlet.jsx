@@ -185,7 +185,7 @@ const OutletCarousel = ({ data, onMarkerPress, mapRef, handleCardPress }) => {
         onMarkerPress(item); // Call the passed function on press
         setActiveSlide(index); // Update active slide for visual feedback (optional)
         handleCardPress(item);
-        navigation.navigate("contact", { it : item });
+        // navigation.navigate("contact", { it : item });
       }}
     >
       <Image
