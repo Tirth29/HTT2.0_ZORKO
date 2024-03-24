@@ -1,24 +1,36 @@
 import { View, Text, ScrollView } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { colors, defaultStyle, formHeading } from "../Styles/styles";
 import Header from "../Components/Header";
 import OrderItem from "../Components/OrderItem";
 import Loader from "../Components/Loader";
-import { orders } from "../Screens/Orders";
+// import { orders } from "../Screens/Orders";
 import { useIsFocused } from "@react-navigation/native";
 import { useGetOrders, useMessageAndErrorOther } from "../Utils/hooks";
 import { Headline } from "react-native-paper";
 import { processOrder } from "../Redux/Actions/OtherAction";
 import { useDispatch } from "react-redux";
 
-const AdminOrders = ({navigation}) => {
+const AdminOrders = async ({ navigation }) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-    const {loading, orders } = useGetOrders(isFocused,true);
-    const processOrderLoading = useMessageAndErrorOther(dispatch , navigation , "adminpanel");
-    const updateHandler = (id) => {
-      dispatch(processOrder(id))
-    };
+  // const [orders, setOrders] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  const { loading } = useGetOrders(isFocused, true);
+  const orders = useGetOrders(isFocused);
+
+  console.log(orders);
+  console.log("orders");
+  // const data = await axios.get(`${server}/order/admin`);
+  // console.log(data);
+  const processOrderLoading = useMessageAndErrorOther(
+    dispatch,
+    navigation,
+    "adminpanel"
+  );
+  const updateHandler = (id) => {
+    dispatch(processOrder(id));
+  };
   return (
     <View
       style={{
@@ -27,7 +39,7 @@ const AdminOrders = ({navigation}) => {
       }}
     >
       <Header back={true} />
-      <View style={{maerginTop:70,marginBottom:20, }}>
+      <View style={{ maerginTop: 70, marginBottom: 20 }}>
         <Text style={formHeading}>All Orders</Text>
       </View>
       {loading ? (
@@ -42,19 +54,21 @@ const AdminOrders = ({navigation}) => {
           <ScrollView showsVerticalScrollIndicator={false}>
             {orders.length > 0 ? (
               orders.map((item, index) => (
-                <OrderItem
-                  key={item._id}
-                  id={item._id}
-                  i={index}
-                  price={item.totalAmount}
-                  status={item.orderStatus}
-                  paymentMethod={item.paymentMethod}
-                  orderedOn={item.createdAt.split("T")[0]}
-                  address={`${item.shippingInfo.address}, ${item.shippingInfo.city}, ${item.shippingInfo.country}, ${item.shippingInfo.pinCode}`}
-                  admin={true}
-                  updateHandler={updateHandler}
-                  loading={processOrderLoading}
-                />
+                <View key={index}>
+                  <OrderItem
+                    key={index}
+                    id={item._id}
+                    i={index}
+                    price={item.totalAmount}
+                    status={item.orderStatus}
+                    paymentMethod={item.paymentMethod}
+                    orderedOn={item.createdAt.split("T")[0]}
+                    address={`${item.shippingInfo.address}, ${item.shippingInfo.city}, ${item.shippingInfo.country}, ${item.shippingInfo.pinCode}`}
+                    admin={true}
+                    updateHandler={updateHandler}
+                    loading={processOrderLoading}
+                  />
+                </View>
               ))
             ) : (
               <Headline style={{ textAlign: "center" }}>No Orders Yet</Headline>

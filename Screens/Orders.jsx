@@ -11,7 +11,10 @@ import { useGetOrders } from "../Utils/hooks";
 
 const Orders = () => {
   const isFocused = useIsFocused();
-  const { loading, orders } = useGetOrders(isFocused);
+  const { loading } = useGetOrders(isFocused);
+  const orders = useGetOrders(isFocused);
+  console.log(orders.orders);
+
   return (
     <View style={defaultStyle}>
       {/* header  */}
@@ -31,20 +34,24 @@ const Orders = () => {
         >
           <ScrollView showsVerticalScrollIndicator={false}>
             {orders.length > 0 ? (
-              orders.map((item, index) => (
-                <OrderItem
-                  key={item._id}
-                  id={item._id}
-                  i={index}
-                  cname={item.user}
-                  price={item.totalAmount}
-                  status={item.orderStatus}
-                  paymentMethod={item.paymentMethod}
-                  orderedOn={item.createdAt.split("T")[0]}
-                  address={`${item.shippingInfo.address}, ${item.shippingInfo.city}, ${item.shippingInfo.country}, ${item.shippingInfo.pinCode}`}
-                  admin={false}
-                />
-              ))
+              orders.map(
+                (item, index) => (
+                  <View>
+                    <OrderItem
+                      i={index}
+                      id={item._id}
+                      cname={item.user}
+                      price={item.totalAmount}
+                      status={item.orderStatus}
+                      paymentMethod={item.paymentMethod}
+                      orderedOn={item.createdAt.split("T")[0]}
+                      address={`${item.shippingInfo.address}, ${item.shippingInfo.city}, ${item.shippingInfo.country}, ${item.shippingInfo.pinCode}`}
+                      admin={false}
+                    />
+                  </View>
+                )
+                // console.log(item)
+              )
             ) : (
               <Headline style={{ textAlign: "center" }}>No Orders Yet</Headline>
             )}

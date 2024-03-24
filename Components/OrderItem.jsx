@@ -1,10 +1,11 @@
 import { View, Text, StyleSheet } from "react-native";
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { colors } from "../Styles/styles";
 import { Button } from "react-native-paper";
-const API_ENDPOINT = "https://e-commerce-server-a619.up.railway.app/api/v1/user"
+import { server } from "../Redux/Store";
+const API_ENDPOINT = `${server}/user`;
 
-const OrderItem = async({
+const OrderItem = async ({
   id,
   price,
   address,
@@ -17,7 +18,7 @@ const OrderItem = async({
   loading,
   i = 0,
 }) => {
-  const [cuname, setCuname] = useState('');
+  const [cuname, setCuname] = useState("");
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -26,7 +27,7 @@ const OrderItem = async({
         const { name } = response.data;
         setCuname(name);
       } catch (error) {
-        console.error('Error retrieving user:', error);
+        console.error("Error retrieving user:", error);
         // Handle error state or display a message to the user
       }
     };
@@ -40,12 +41,13 @@ const OrderItem = async({
         backgroundColor: i % 2 === 0 ? colors.color2 : colors.color3,
         ...styles.container,
       }}
+      key={key}
     >
       <Text
         style={{
           ...styles.text,
           backgroundColor: i % 2 === 0 ? colors.color3 : colors.color1,
-        //   color:i%2===0 ? colors.color2 : colors.color3,
+          //   color:i%2===0 ? colors.color2 : colors.color3,
         }}
       >
         ID:#{id}
@@ -80,17 +82,17 @@ const OrderItem = async({
 };
 
 const TextBox = ({ title, value, i }) => (
-    <Text
-      style={{
-        marginVertical: 6,
-        color: i % 2 === 0 ? colors.color3 : colors.color2,
-      }}
-    >
-      <Text style={{ fontWeight: "900" }}>{title} - </Text>
-      {title === "Price" ? "₹" : ""}
-      {value}
-    </Text>
-  );
+  <Text
+    style={{
+      marginVertical: 6,
+      color: i % 2 === 0 ? colors.color3 : colors.color2,
+    }}
+  >
+    <Text style={{ fontWeight: "900" }}>{title} - </Text>
+    {title === "Price" ? "₹" : ""}
+    {value}
+  </Text>
+);
 
 const styles = StyleSheet.create({
   container: {

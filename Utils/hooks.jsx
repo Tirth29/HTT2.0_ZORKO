@@ -86,7 +86,7 @@ export const useSetCategories = (setCategories, isFocused) => {
     axios
       .get(`${server}/product/categories`)
       .then((res) => {
-          setCategories(res.data.categories);
+        setCategories(res.data.categories);
       })
       .catch((e) => {
         Toast.show({
@@ -115,6 +115,7 @@ export const useGetOrders = (isFocused, isAdmin = false) => {
         });
         setLoading(false);
       });
+    console.log(orders);
   }, [isFocused]);
 
   return {
