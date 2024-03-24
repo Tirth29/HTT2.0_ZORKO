@@ -76,7 +76,7 @@ const Main = () => {
           <Stack.Screen name="adminorders" component={AdminOrders} />
           <Stack.Screen name="newproduct" component={NewProduct} />
           <Stack.Screen name="productimages" component={ProductImages} />
-          <Stack.Screen name="nearbyoutlet" component={NearbyOutlets} />
+          <Stack.Screen name="map" component={NearbyOutlets} />
         </Stack.Group>
       </Stack.Navigator>
       <Toast position="top" topOffset={40} />
