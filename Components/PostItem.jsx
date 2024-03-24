@@ -140,7 +140,7 @@ const PostItem = ({ post }) => {
           />
         </Pressable>
         <Pressable style={{marginLeft:7}} onPress={handleComment}>
-        <MaterialCommunityIcons name="message-outline" size={24} />
+        <MaterialCommunityIcons onPress={handleOpenComments} name="message-outline" size={24} />
         </Pressable>
       </View>
       <Text>{post.description}</Text>
