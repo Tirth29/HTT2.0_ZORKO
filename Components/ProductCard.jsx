@@ -20,13 +20,13 @@ const ProductCard = ({
     >
       <View
         style={{
-          elevation: 15,
-          width: 250,
+          elevation: 10,
+          width: 150,
           alignItems: "center",
           justifyContent: "space-between",
-          margin: 20,
+          margin: 10,
           borderRadius: 20,
-          height: 400,
+          height: 250,
           backgroundColor: i % 2 === 0 ? colors.color1 : colors.color2,
         }}
       >
@@ -36,11 +36,11 @@ const ProductCard = ({
           }}
           style={{
             width: "100%",
-            height: 200,
+            height: 115,
             resizeMode: "contain",
             position: "absolute",
             // left: 50,
-            top: 105,
+            top: 65,
             // borderBottomLeftRadius: 10,
           }}
         />
@@ -48,7 +48,7 @@ const ProductCard = ({
         <View
           style={{
             flexDirection: "row",
-            padding: 20,
+            padding: 15,
             justifyContent: "space-between",
             width: "100%",
           }}
@@ -57,7 +57,7 @@ const ProductCard = ({
             numberOfLines={2}
             style={{
               color: i % 2 === 0 ? colors.color2 : colors.color3,
-              fontSize: 25,
+              fontSize: 18,
               fontWeight: "300",
               width: "60%",
             }}
@@ -69,7 +69,7 @@ const ProductCard = ({
             numberOfLines={2}
             style={{
               color: i % 2 === 0 ? colors.color2 : colors.color3,
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: "700",
             }}
           >

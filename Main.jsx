@@ -43,7 +43,7 @@ const Main = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="nearbyoutlet"
+        initialRouteName="home"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Group>

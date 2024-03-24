@@ -4,6 +4,7 @@ import { Avatar, TextInput } from "react-native-paper";
 import { colors, inputOptions } from "../Styles/styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
+import Picker from "react-native-picker-select";
 
 const Header = ({ back, emptyCart = false, setPriceLimit }) => {
   const [limit, setLimit] = useState(1000);
@@ -14,11 +15,6 @@ const Header = ({ back, emptyCart = false, setPriceLimit }) => {
     dispatch({
       type: "clearCart",
     });
-  };
-
-  const handleLimitChange = (x) => {
-    setLimit(x);
-    setPriceLimit(x);
   };
 
   return (
@@ -45,21 +41,11 @@ const Header = ({ back, emptyCart = false, setPriceLimit }) => {
         </TouchableOpacity>
       )}
 
-      <View style={{ width: "40%" }}>
-        {/* set price range filter */}
-        <TextInput
-          placeholder="Set Limit"
-          keyboardType="numeric"
-          value={limit}
-          onChangeText={handleLimitChange}
-        />
-      </View>
-
       <TouchableOpacity
         style={{
           position: "absolute",
-          right: 20,
-          top: 30,
+          right: 60,
+          top: 38,
           zIndex: 10,
         }}
         onPress={emptyCart ? emptyCartHandler : () => navigate.navigate("cart")}
@@ -67,6 +53,7 @@ const Header = ({ back, emptyCart = false, setPriceLimit }) => {
         <Avatar.Icon
           style={{
             backgroundColor: colors.color4,
+            paddingBottom: 10,
           }}
           icon={emptyCart ? "delete-outline" : "cart-outline"}
           color={

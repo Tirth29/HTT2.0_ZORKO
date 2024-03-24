@@ -15,6 +15,7 @@ import {
 } from "../Redux/Actions/ProductAction";
 import { useSetCategories } from "../Utils/hooks";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import Picker from "react-native-picker-select";
 
 const Home = () => {
   const navigate = useNavigation();
@@ -75,11 +76,17 @@ const Home = () => {
     }
   }, [dispatch, searchQuery, selectedCategory, isFocused]);
 
-  const updatePriceLimit = (x) => {
+  const handleLimitChange = (x) => {
+    // setLimit(x);
     setPriceLimit(x);
-    // console.log(x);
   };
 
+  const priceOptions = [
+    { label: "100", value: 100 },
+    { label: "200", value: 200 },
+    { label: "300", value: 300 },
+    { label: "400", value: 400 },
+  ];
   return (
     <>
       {activeSearch && (
@@ -92,19 +99,18 @@ const Home = () => {
       )}
 
       <View style={defaultStyle}>
-        <Header setPriceLimit={updatePriceLimit} />
+        <Header />
 
         {/* Heading Row */}
         <View
           style={{
-            paddingTop: 20,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
           }}
         >
           {/* Heading */}
-          <Heading text1="Our" text2="Products" />
+          <Heading text1="" text2="Products" />
 
           {/* Search Bar */}
           <View>
@@ -123,7 +129,7 @@ const Home = () => {
         <View
           style={{
             flexDirection: "row",
-            height: 80,
+            height: 60,
           }}
         >
           <ScrollView
@@ -133,6 +139,17 @@ const Home = () => {
             }}
             showsHorizontalScrollIndicator={false}
           >
+            <View style={{ width: "12.5%" }}>
+              <Picker
+                placeholder={{
+                  label: "Filter",
+                  value: 10000,
+                }}
+                items={priceOptions}
+                onValueChange={(value) => handleLimitChange(value)}
+                style={{ marginTop: 10 }}
+              />
+            </View>
             <Button
               style={{
                 backgroundColor:
@@ -181,7 +198,7 @@ const Home = () => {
 
         {/* Products */}
         <View style={{ flex: 1 }}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <ScrollView vertical showsHorizontalScrollIndicator={false}>
             {products.map(
               (item) =>
                 item.price < priceLimit && (
