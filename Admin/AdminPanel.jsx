@@ -19,7 +19,10 @@ const products = [];
 const AdminPanel = ({ navigation }) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
-  const {products, inStock, outOfStock, loading } = useAdminProducts(dispatch, isFocused);
+  const { products, inStock, outOfStock, loading } = useAdminProducts(
+    dispatch,
+    isFocused
+  );
   const navigate = useNavigation();
   const navigationHandler = (text) => {
     switch (text) {
@@ -41,7 +44,12 @@ const AdminPanel = ({ navigation }) => {
   const deleteProductHandler = (id) => {
     dispatch(deleteProduct(id));
   };
-  const loadingDelete = useMessageAndErrorOther(dispatch,null,null,getAdminProducts);
+  const loadingDelete = useMessageAndErrorOther(
+    dispatch,
+    null,
+    null,
+    getAdminProducts
+  );
   return (
     <View style={defaultStyle}>
       <Header back={true} />
@@ -90,20 +98,21 @@ const AdminPanel = ({ navigation }) => {
           <ProductListHeading />
           <ScrollView>
             <View>
-              {!loadingDelete && products.map((item, index) => (
-                <ProductListItem
-                  key={item._id}
-                  id={item._id}
-                  i={index}
-                  navigate={navigation}
-                  deleteHandler={deleteProductHandler}
-                  price={item.price}
-                  stock={item.stock}
-                  name={item.name}
-                  category={item.category?.category}
-                  imgSrc={item.images[0].url}
-                />
-              ))}
+              {!loadingDelete &&
+                products.map((item, index) => (
+                  <ProductListItem
+                    key={item._id}
+                    id={item._id}
+                    i={index}
+                    navigate={navigation}
+                    deleteHandler={deleteProductHandler}
+                    price={item.price}
+                    stock={item.stock}
+                    name={item.name}
+                    category={item.category?.category}
+                    imgSrc={item.images[0].url}
+                  />
+                ))}
             </View>
           </ScrollView>
         </>

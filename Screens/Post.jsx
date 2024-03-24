@@ -5,6 +5,7 @@ import PostItem from "../Components/PostItem";
 import { ScrollView } from "react-native-gesture-handler";
 import { server } from "../Redux/Store";
 import axios from "axios";
+import { colors } from "../Styles/styles";
 // Mock posts data
 // const mockPosts = [
 //   {
@@ -48,6 +49,8 @@ import axios from "axios";
 
 const Post = () => {
   const [posts, setPosts] = useState([]);
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState(null);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [filter, setFilter] = useState("recent"); // Default filter
   const navigation = useNavigation();
@@ -112,22 +115,51 @@ const Post = () => {
         }}
       >
         <TouchableOpacity onPress={() => handleFilter("recent")}>
-          <Text style={{ color: filter === "recent" ? "blue" : "black" }}>
+          <Text
+            style={{
+              color: filter === "recent" ? colors.color2 : "black",
+              backgroundColor: filter === "recent" ? colors.color1 : "white",
+              padding: 2,
+              borderRadius: 5,
+            }}
+          >
             Most Recent
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleFilter("oldest")}>
-          <Text style={{ color: filter === "oldest" ? "blue" : "black" }}>
+          <Text
+            style={{
+              color: filter === "oldest" ? colors.color2 : "black",
+              backgroundColor: filter === "oldest" ? colors.color1 : "white",
+              padding: 2,
+              borderRadius: 5,
+            }}
+          >
             Least Recent
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleFilter("mostLiked")}>
-          <Text style={{ color: filter === "mostLiked" ? "blue" : "black" }}>
+          <Text
+            style={{
+              color: filter === "mostLiked" ? colors.color2 : "black",
+              backgroundColor: filter === "mostLiked" ? colors.color1 : "white",
+              padding: 2,
+              borderRadius: 5,
+            }}
+          >
             Most Liked
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleFilter("leastLiked")}>
-          <Text style={{ color: filter === "leastLiked" ? "blue" : "black" }}>
+          <Text
+            style={{
+              color: filter === "leastLiked" ? colors.color2 : "black",
+              backgroundColor:
+                filter === "leastLiked" ? colors.color1 : "white",
+              padding: 2,
+              borderRadius: 5,
+            }}
+          >
             Least Liked
           </Text>
         </TouchableOpacity>
@@ -147,7 +179,7 @@ const Post = () => {
           style={{
             textAlign: "center",
             padding: 10,
-            backgroundColor: "blue",
+            backgroundColor: colors.color1,
             color: "white",
             borderRadius: 5,
           }}

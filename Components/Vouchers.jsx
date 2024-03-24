@@ -3,7 +3,7 @@ import Footer from "./Footer";
 import { useState, useEffect } from "react";
 import { colors } from "../Styles/styles";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { loadUser } from "./Redux/Actions/UserAction";
+// import { loadUser } from "./Redux/Actions/UserAction";
 
 const Vouchers = () => {
    const [vouchers, setVouchers] = useState([]);

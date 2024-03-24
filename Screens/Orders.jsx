@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, StyleSheet } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { colors, defaultStyle } from "../Styles/styles";
 import { formHeading } from "../Styles/styles";
 import Header from "../Components/Header";
@@ -8,12 +8,25 @@ import { Headline } from "react-native-paper";
 import OrderItem from "../Components/OrderItem";
 import { useIsFocused } from "@react-navigation/native";
 import { useGetOrders } from "../Utils/hooks";
+import axios from "axios";
+import { server } from "../Redux/Store";
 
-const Orders = () => {
-  const isFocused = useIsFocused();
-  const { loading } = useGetOrders(isFocused);
-  const orders = useGetOrders(isFocused);
-  console.log(orders.orders);
+const Orders = async () => {
+  const [orders, setOrders] = useState([]);
+  try {
+    const { data } = await axios.get(`${server}/order/my`, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      withCredentials: true,
+    });
+    console.log(data.orders);
+    setOrders(data.orders);
+    console.log(orders);
+  } catch (e) {
+    console.log(e);
+  }
+  // console.log({ orders: orders.orders });
 
   return (
     <View style={defaultStyle}>

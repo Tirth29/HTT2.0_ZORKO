@@ -30,7 +30,7 @@ const Footer = ({ activeRoute = "home" }) => {
         else navigate.navigate("post");
         break;
       case 4:
-        navigate.navigate("map");
+        navigate.navigate("nearbyoutlet");
         break;
       default:
         navigate.navigate("home");
@@ -50,9 +50,9 @@ const Footer = ({ activeRoute = "home" }) => {
       <View
         style={{
           backgroundColor: colors.color1,
-          borderTopRightRadius: 100,
-          borderTopLeftRadius: 100,
-          height: 50,
+          borderTopLeftRadius: 30,
+          borderTopRightRadius: 30,
+          height: 55,
           position: "absolute",
           width: "100%",
           bottom: 0,
@@ -62,6 +62,7 @@ const Footer = ({ activeRoute = "home" }) => {
           style={{
             flexDirection: "row",
             justifyContent: "space-evenly",
+
           }}
         >
           <TouchableOpacity
@@ -98,6 +99,17 @@ const Footer = ({ activeRoute = "home" }) => {
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.8}
+          
+            onPress={() => navigationHandler(0)}
+          >
+            <Avatar.Icon
+              {...avatarOptions}
+              style={{border : 10,borderColor: colors.color2}}
+              icon={activeRoute === "home" ? "home" : "home-outline"}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
             size={50}
             style={{
               backgroundColor: colors.color1,
@@ -129,13 +141,13 @@ const Footer = ({ activeRoute = "home" }) => {
                 isAuthenticated === false
                   ? "login"
                   : activeRoute === "profile"
-                  ? "account"
-                  : "account-outline"
+                    ? "account"
+                    : "account-outline"
               }
             />
           </TouchableOpacity>
         </View>
-        <View
+        {/* <View
           style={{
             position: "absolute",
             width: 70,
@@ -155,17 +167,9 @@ const Footer = ({ activeRoute = "home" }) => {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => navigationHandler(0)}
-            >
-              <Avatar.Icon
-                {...avatarOptions}
-                icon={activeRoute === "home" ? "home" : "home-outline"}
-              />
-            </TouchableOpacity>
+            
           </View>
-        </View>
+        </View> */}
       </View>
     )
   );
